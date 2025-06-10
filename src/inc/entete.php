@@ -10,6 +10,7 @@
         <div class="conteneur-nav">
             <ul class="groupe" id="nav">
                 <li><a style="width: 135px" href="index.php">Page d'accueil</a></li>
+                <li><a style="width: 135px" href="listerEquipe.php">Lister les équipes</a></li>
                 <li><a style="width: 135px" href="ajouterEquipe.php">Ajouter une équipe</a></li>
                 <li><a style="width: 135px" href="modifierEquipe.php">Modifier une équipe</a></li>
             </ul>

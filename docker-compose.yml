@@ -1,0 +1,10 @@
+services:
+  nginx:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: nginx-alpine-oce
+    ports:
+      - "8081:8080"
+    restart: unless-stopped
+  

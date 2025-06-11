@@ -10,7 +10,7 @@ $page = "index";
     <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 <body>
-    <div id="wrapAuxTomates">
+    <div id="wrap">
         <?php include('inc/entete.php'); ?>
         <div id="contenu">
             <?php
@@ -18,19 +18,19 @@ $page = "index";
                     $sqlEquipe = "SELECT * FROM Equipe";
                     $rsEquipe = $conn->query( $sqlEquipe );
                     echo "<div class=\"boite\">";
-                    echo "<div class=\"titre\">Liste des équipes</div>";
+                    echo "<div class=\"titre\">Liste des équipes (Nom équipe/ville)</div>";
                     
                     echo "<ul>";
                     
                     while( $rowEquipe = $rsEquipe->fetch_assoc() ) {
-                        echo "<li>" . $rowEquipe['NomEquipe'] . "</li>";
+                        echo "<li>" . $rowEquipe['NomEquipe'] . " " . $rowEquipe['Ville'] . "</li>";
                     }
                         
                     echo "</ul>";
                     echo "</div>";
                 }
                 catch(Exception $ex) {
-                    echo "<div class=\"erreur\">Une erreur s'est produite lors de la lecture des essences.</div>";
+                    echo "<div class=\"erreur\">Une erreur s'est produite lors de la lecture des équipes.</div>";
                     error_log($ex);
                 }
             ?>

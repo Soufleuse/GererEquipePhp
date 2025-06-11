@@ -1,6 +1,6 @@
 <div id="conteneur-piv">
     <div class="entete">
-		<a href="https://mrnf.gouv.qc.ca/">
+		<a href="https://localhost/gererequipe">
             <img id="pivImage" alt="Mon logo" src="images/monIcone.jpg" width="256" height="72">
         </a>
     </div>

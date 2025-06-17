@@ -12,7 +12,7 @@
         <div id="contenu">
             <p>
                 <label for="cboListeEquipe">Équipe à modifier</label>
-                <select id="cboListeEquipe" autofocus required>
+                <select id="cboListeEquipe" name="cboListeEquipe" onchange="afficher()">
                     <option value="">--- Sélectionnez une équipe ---</option>
                     <?php
                         include('inc/accesdonnees.php');
@@ -21,8 +21,8 @@
                             
                             foreach($listeEquipe as $uneEquipe) {
                                 echo "<option value=\"" . $uneEquipe['id'] . "\">" .
-                                     htmlspecialchars($uneEquipe['nomEquipe']) . " " .
-                                     htmlspecialchars($uneEquipe['ville']) . "</option>";
+                                        htmlspecialchars($uneEquipe['nomEquipe']) . " " .
+                                        htmlspecialchars($uneEquipe['ville']) . "</option>\r\n";
                             }
                         }
                         catch(Exception $ex) {
@@ -32,6 +32,7 @@
                     ?>
                 </select>
             </p>
+            <p>Sélection : <span id="sortie"></span></p>
             <p>
                 <label for="txtNomEquipe">Nom de l'équipe</label>
                 <input type="text" id="txtNomEquipe" name="txtNomEquipe" maxlength="50" placeholder="Nom de l'équipe" required></input>
@@ -45,6 +46,21 @@
             </p>
         </div>
     </div>
+    <script type="text/javascript" src="inc/accesdonnees.js"></script>
+    <script type="text/javascript">
+        async function afficher() {
+            let mesEquipes = document.getElementById("cboListeEquipe");
+            let maSelection = mesEquipes.value;
+            let jsonnewsted = await getEquipe(mesEquipes.value);
+            let sortie = document.getElementById("sortie");
+            sortie.innerHTML = JSON.stringify(jsonnewsted);
+
+            let nomEquipe = document.getElementById("txtNomEquipe");
+            nomEquipe.value = jsonnewsted.nomEquipe;
+            let ville = document.getElementById("txtVille");
+            ville.value = jsonnewsted.ville;
+        }
+        </script>
     <?php include('inc/pied.php') ?>
 </body>
 </html>

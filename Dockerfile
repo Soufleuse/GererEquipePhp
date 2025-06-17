@@ -53,7 +53,7 @@ RUN apk --no-cache --no-check-certificate \
 
 # Installer les dépendances pour les extensions PHP
 RUN apk add --no-cache \
-    php83-dev \
+    php84-dev \
     gcc \
     musl-dev \
     make \
@@ -61,20 +61,20 @@ RUN apk add --no-cache \
 
 # Installer PHP-FPM et Supervisor (sans MySQL/MariaDB et extensions MySQL)
 RUN apk add --no-cache \
-    php83 \
-    php83-fpm \
-    php83-json \
-    php83-openssl \
-    php83-curl \
-    php83-zlib \
-    php83-xml \
-    php83-phar \
-    php83-intl \
-    php83-dom \
-    php83-xmlreader \
-    php83-ctype \
-    php83-session \
-    php83-mbstring \
+    php84 \
+    php84-fpm \
+    php84-json \
+    php84-openssl \
+    php84-curl \
+    php84-zlib \
+    php84-xml \
+    php84-phar \
+    php84-intl \
+    php84-dom \
+    php84-xmlreader \
+    php84-ctype \
+    php84-session \
+    php84-mbstring \
     supervisor
 
 # Installer le runtime .NET et les dépendances pour SQL Server
@@ -88,8 +88,8 @@ RUN apk add --no-cache \
     libstdc++ \
     zlib
 
-# CONFIGURATION ENVIRONNEMENT PRODUCTION
-# Définir les variables d'environnement pour la production
+# CONFIGURATION ENVIRONNEMENT Production
+# Définir les variables d'environnement pour la Production
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV DOTNET_ENVIRONMENT=Production
 

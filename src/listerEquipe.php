@@ -1,7 +1,4 @@
-<?php
-include('config.php');
-$page = "index";
-?>
+<?php $page = "index"; ?>
 <!DOCTYPE html>
 <html>
 <head>

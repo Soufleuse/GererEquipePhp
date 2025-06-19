@@ -5,6 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: nginx-alpine-oce
     ports:
-      - "8081:8080"
+      - "12081:12080"
+      - "5245:5245"
     restart: unless-stopped
   

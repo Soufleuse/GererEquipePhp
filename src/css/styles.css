@@ -34,13 +34,6 @@ h3 {
 	margin-top: 15px;
 	margin-bottom: 10px;
 }
-h3.categories {
-	text-transform: uppercase;
-	font-weight: 400;
-}
-h3.categories a {
-	color: #007f63 !important;
-}
 h4 {
 	font-family: 'Roboto', sans-serif;
 	font-size: 1.2em;
@@ -50,11 +43,12 @@ h4 {
 select {
 	outline: 0;
 	border: 1px solid #9b908a;
-	width: 302px;
+	width: 370px;
 	padding: 4px 4px 4px 10px;
 	color: #FFF;
 	border-radius: 5px;
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#38332f', endColorstr='#110f0d',GradientType=0 ); /* IE6-9 */
+	background-color: #006a57;
 	background-repeat: no-repeat, repeat;
 	background-position: 99% 0%, top left;
 }
@@ -65,9 +59,9 @@ input[disabled] {
 	color: #CCC !important;
 }
 select option, select optgroup {
-	background: #564f48;
+	background: #1294cf;
 }
-#effacer, #soumission, #btnComparer {
+#effacer, #soumission {
 	width: 146px;
 	text-transform: uppercase;
 	margin-right: 10px;
@@ -86,26 +80,6 @@ select option, select optgroup {
 	background: -ms-linear-gradient(top,  #38332f 0%,#4d4844 51%,#110f0d 100%); /* IE10+ */
 	background: linear-gradient(to bottom,  #38332f 0%,#4d4844 51%,#110f0d 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#38332f', endColorstr='#110f0d',GradientType=0 ); /* IE6-9 */
-}
-#btnComparer {
-	width: 200px;
-	text-transform: none;
-	margin-right: 10px;
-	border: 1px solid #9b908a;
-	float: left;
-	padding: 4px;
-	color: #1a1715;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-	background: #f8f3ef; /* Old browsers */
-	background: -moz-linear-gradient(top, #f8f3ef 31%, #e3d7cc 64%, #dcd4cd 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(31%,#f8f3ef), color-stop(64%,#e3d7cc), color-stop(100%,#dcd4cd)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #f8f3ef 31%,#e3d7cc 64%,#dcd4cd 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #f8f3ef 31%,#e3d7cc 64%,#dcd4cd 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, #f8f3ef 31%,#e3d7cc 64%,#dcd4cd 100%); /* IE10+ */
-	background: linear-gradient(to bottom, #f8f3ef 31%,#e3d7cc 64%,#dcd4cd 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f3ef', endColorstr='#dcd4cd',GradientType=0 ); /* IE6-9 */
 }
 
 /* ------------ ENTÊTE ------------ */
@@ -242,7 +216,7 @@ select option, select optgroup {
 	border-left: 1px dashed #007f63;
 }
 #contenu .col-3 div select {
-	width: 302px;
+	width: 370px;
 }
 #contenu #affichage {
 	width: 100%;
@@ -337,7 +311,6 @@ select option, select optgroup {
 
 /* ------------ PIED DE PAGE ------------ */
 
-
 #piedpage {
 	position: relative;
 	width: 100%;
@@ -422,14 +395,6 @@ table h1 {
     font-size: 1.5em;
     font-weight: 300;
 }
-table .nom-arbre {
-    text-transform: uppercase;
-    border: 0px;
-    color: #FFF;
-    padding: 7px !important;
-    font-size: 1.5em;
-    font-weight: 300;
-}
 table h2 {
     font-size: 1.4em;
     font-weight: 400;
@@ -441,43 +406,7 @@ table h3 {
 th {
     text-align: left;
 }
-th.nom-arbre {
-    background: #1a1715;
-    border: 1px solid #9b908a;
-}
-th.nom-anglais, th.nom-latin {
-    background: #564f48;
-    color: #FFF;
-    padding: 7px;
-    border: 1px solid #9b908a;
-}
 td ul {
     list-style-type: disc;
     list-style-position: inside;
-}
-td.categorie {
-    background: #1a1715;
-    border: 1px solid #9b908a;
-    border-bottom: 0px;
-}
-td.sous-categorie {
-    background: #564f48;
-    color: #FFF;
-    border: 1px solid #9b908a;
-    border-right: 0;
-    border-top: 0px;
-}
-td.nom-caracteristique {
-    background: #e4dcd5;
-}
-tr.caracteristiques td p {
-    font-weight: bold;
-    margin: 3px 0px;
-}
-tr.caracteristiques td p:first-child {
-    margin-top: 0px;
-}
-tr.caracteristiques td {
-    border: 1px solid #9b908a;
-    padding: 7px;
 }

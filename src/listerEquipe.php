@@ -11,16 +11,15 @@
         <?php include('inc/entete.php'); ?>
         <div id="contenu">
             <?php
+                include('inc/accesdonnees.php');
                 try {
-                    $sqlEquipe = "SELECT * FROM Equipe";
-                    $rsEquipe = $conn->query( $sqlEquipe );
+                    $listeEquipe = ObtenirListeEquipe();
                     echo "<div class=\"boite\">";
                     echo "<div class=\"titre\">Liste des équipes (Nom équipe/ville)</div>";
-                    
                     echo "<ul>";
                     
-                    while( $rowEquipe = $rsEquipe->fetch_assoc() ) {
-                        echo "<li>" . $rowEquipe['NomEquipe'] . " " . $rowEquipe['Ville'] . "</li>";
+                    foreach($listeEquipe as $uneEquipe) {
+                        echo "<li>" . $uneEquipe['nomEquipe'] . " " . $uneEquipe['ville'] . "</li>";
                     }
                         
                     echo "</ul>";

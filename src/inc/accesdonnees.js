@@ -59,3 +59,38 @@ async function majEquipe(entree)
         alert("Erreur lors de la mise à jour de l'équipe.");
     }
 }
+
+async function ajoutEquipe(entree)
+{
+    console.log('Entrée ajoutEquipe : ', entree);
+    
+    const url = "http://localhost:5245/api/equipe/";
+    console.log("url : ", url);
+    console.log("data stringifié : " + JSON.stringify(entree));
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('accept', '*/*');
+    
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify(entree)
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+        
+        alert("Équipe ajoutée avec succès!");
+        console.log('Ajout réussi - Code:', response.status);
+        
+        // Optionnel : réinitialiser le formulaire ou rediriger
+        // document.forms["modificationequipe"].reset();
+        
+    } catch (error) {
+        console.error('Erreur lors de l\'ajout:', error);
+        alert("Erreur lors de l\'ajout de l'équipe.");
+    }
+}

@@ -17,6 +17,7 @@
             <p>
                 Ce site affiche une liste d'équipes de hockey. On peut ajouter, modifier ou consulter une équipe en particulier. Dans l'entête, on a les actions disponibles à l'utilisateur.
             </p>
+            <p>Note ici : la présentation visuelle de ce site est actuellement TRÈS laide. Le programmeur du site est au courant et refera le visuel dès que possble.</p>
         </div>
     </div>
     <?php include('inc/pied.php') ?>

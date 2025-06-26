@@ -56,9 +56,11 @@
 
         async function soumettreFormulaire(event) {
             event.preventDefault(); // Empêche la soumission normale du formulaire
+
+            const idNouvelleEquipe = await getDernierNumeroEquipe();
             
             // Récupération des données du formulaire
-            const idEquipe = document.getElementById("txtIdEquipe").value;
+            //const idEquipe = document.getElementById("txtIdEquipe").value;
             const nomEquipe = document.getElementById("txtNomEquipe").value;
             const ville = document.getElementById("txtVille").value;
             const anneedebut = document.getElementById("txtAnneeDebut").value;
@@ -66,14 +68,19 @@
             const estdevenuequipe = document.getElementById("txtEsDevenu").value;
             
             // Validation basique
-            if (!idEquipe || !nomEquipe || !ville || !anneedebut) {
+            if (idNouvelleEquipe == undefined || idNouvelleEquipe < 1) {
+                alert("Le id de la nouvelle équipe n'a pas pu être initialisé.");
+                return false;
+            }
+
+            if (!nomEquipe || !ville || !anneedebut) {
                 alert("Veuillez remplir tous les champs obligatoires.");
                 return false;
             }
             
             // Création de l'objet à envoyer
             const equipeData = {
-                id: parseInt(idEquipe),
+                id: parseInt(idNouvelleEquipe),
                 nomEquipe: nomEquipe,
                 ville: ville,
                 anneeDebut: parseInt(anneedebut),
@@ -81,10 +88,8 @@
                 estDevenueEquipe: convertirEnNombreOuNull(estdevenuequipe)
             };
 
-            console.log("Données à envoyer:", JSON.stringify(equipeData));
-            
             // Appel de votre fonction ajoutEquipe
-            await ajoutEquipe(equipeData);
+            ajoutEquipe(equipeData);
             
             return false; // Empêche la soumission du formulaire
         }

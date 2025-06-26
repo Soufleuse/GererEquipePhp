@@ -60,37 +60,61 @@ async function majEquipe(entree)
     }
 }
 
-async function ajoutEquipe(entree)
-{
-    console.log('Entrée ajoutEquipe : ', entree);
+async function getDernierNumeroEquipe() {
+    const url = "http://localhost:5245/api/equipe/prochainid";
     
+    let monId = 0;
+    const response = await fetch(url);
+    if(response.ok) {
+        monId = await response.json();
+        console.log(`monId: ${monId}`);
+    }
+
+    return monId;
+    /*fetch(url).then((response) => response.json())
+        .then((idARetourner) => {
+            console.log(`x: ${idARetourner}`);
+            return idARetourner;
+        })
+    .catch((error) => {
+        console.error(error.message);
+    });*/
+}
+
+function ajoutEquipe(entree)
+{
     const url = "http://localhost:5245/api/equipe/";
-    console.log("url : ", url);
-    console.log("data stringifié : " + JSON.stringify(entree));
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('accept', '*/*');
-    
-    try {
-        const response = await fetch(url, {
+
+    fetch(url,
+        {
             method: "POST",
             headers: headers,
             body: JSON.stringify(entree)
-        });
-        
-        if (!response.ok) {
-            throw new Error(`Erreur HTTP: ${response.status}`);
         }
-        
-        alert("Équipe ajoutée avec succès!");
-        console.log('Ajout réussi - Code:', response.status);
-        
-        // Optionnel : réinitialiser le formulaire ou rediriger
-        // document.forms["modificationequipe"].reset();
-        
-    } catch (error) {
-        console.error('Erreur lors de l\'ajout:', error);
-        alert("Erreur lors de l\'ajout de l'équipe.");
-    }
+        ).then((maReponse) => {
+            if (maReponse.ok) {
+                alert("Équipe ajoutée avec succès!");
+                document.getElementById("txtIdEquipe").value = entree.id;
+            }
+            else {
+                const reader = maReponse.body.getReader();
+                reader.read().then((itllgetHer) => {
+                    const utf8Decoder = new TextDecoder("utf-8");
+                    const erreurRecue = utf8Decoder.decode(itllgetHer.value, { stream: true });
+                    const erreurParsee = JSON.parse(erreurRecue);
+                    console.log(erreurParsee);
+                    alert(`Erreur lors de l\'ajout de l'équipe: ${erreurParsee.Message}`);
+                });
+                return;
+            }
+        })
+        .catch((monErreur) => {
+            console.error(monErreur);
+            alert("Erreur lors de l\'ajout de l'équipe.");
+            return;
+        });
 }

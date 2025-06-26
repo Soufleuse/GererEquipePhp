@@ -1,4 +1,4 @@
-FROM php:8.3-alpine AS depart
+FROM php:8.4-alpine3.22 AS depart
 
 COPY certificats/*.crt /usr/local/share/ca-certificates/
 
@@ -19,7 +19,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 # Créer le répertoire web et définir les permissions
 RUN mkdir -p /var/www/html
 
-# Copier composer.json et composer.lock (si présent)
+# Copier les sources du site web
 COPY ./src /var/www/html/
 
 # Changer vers le répertoire de travail
@@ -43,7 +43,7 @@ RUN dotnet restore
 # Build et publish de l'application
 RUN dotnet publish -c Release -o /app --no-restore
 
-FROM nginx:1.28.0-alpine-slim AS fin-finale
+FROM nginx:1.29.0-alpine-slim AS fin-finale
 
 COPY certificats/*.crt /usr/local/share/ca-certificates/
 

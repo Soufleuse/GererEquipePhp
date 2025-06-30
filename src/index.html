@@ -1,18 +1,219 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="3; url=src/managementportal.php">
-    <title>Redirecting...</title>
-    <script>
-        // JavaScript redirect (fallback)
-        setTimeout(function() {
-            window.location.href = "index.php";
-        }, 0);
-    </script>
+    <title>Gestion des Équipes - Ligue Hockey</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
 </head>
 <body>
-    <p>Si vous n'êtes pas redirigés, <a href="index.php">cliquez ici</a>.</p>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-hockey-puck me-2"></i>
+                Ligue Hockey
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="fas fa-users me-1"></i> Équipes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-chart-bar me-1"></i> Statistiques</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Header Section -->
+        <div class="main-header">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="page-title">
+                        <i class="fas fa-users text-primary me-3"></i>
+                        Gestion des Équipes
+                    </h1>
+                    <p class="page-subtitle mb-0">
+                        Gérez les équipes de la ligue de hockey
+                    </p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <button class="btn btn-hockey-primary btn-lg" data-bs-toggle="modal" data-bs-target="#addTeamModal">
+                        <i class="fas fa-plus me-2"></i>
+                        Nouvelle Équipe
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="error-message">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <span id="errorText"></span>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="stats-card">
+                    <div class="stats-number" id="totalEquipes">0</div>
+                    <div class="text-muted">Total Équipes</div>
+                    <i class="fas fa-users fa-2x text-primary mt-2"></i>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stats-card">
+                    <div class="stats-number" id="divisionEst">0</div>
+                    <div class="text-muted">Division Est</div>
+                    <i class="fas fa-map-marker-alt fa-2x text-info mt-2"></i>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stats-card">
+                    <div class="stats-number" id="divisionOuest">0</div>
+                    <div class="text-muted">Division Ouest</div>
+                    <i class="fas fa-map-marker-alt fa-2x text-danger mt-2"></i>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stats-card">
+                    <div class="stats-number" id="divisionCentral">0</div>
+                    <div class="text-muted">Division Central</div>
+                    <i class="fas fa-map-marker-alt fa-2x text-success mt-2"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teams Table -->
+        <div class="team-table">
+            <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                <h4 class="mb-0"><i class="fas fa-list me-2"></i>Liste des Équipes</h4>
+                <div class="d-flex gap-2">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Rechercher une équipe..." style="width: 250px;">
+                    <select id="divisionFilter" class="form-select" style="width: 150px;">
+                        <option value="">Toutes divisions</option>
+                        <option value="est">Est</option>
+                        <option value="ouest">Ouest</option>
+                        <option value="central">Central</option>
+                    </select>
+                    <button class="btn btn-outline-primary" onclick="chargerEquipes()" title="Actualiser">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loading indicator -->
+            <div id="loading" class="loading">
+                <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+                <p class="mt-2">Chargement des équipes...</p>
+            </div>
+            
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-hashtag me-1"></i> ID</th>
+                        <th><i class="fas fa-team me-1"></i> Nom de l'équipe</th>
+                        <th><i class="fas fa-map-marker-alt me-1"></i> Ville</th>
+                        <th><i class="fas fa-layer-group me-1"></i> Division</th>
+                        <th><i class="fas fa-calendar me-1"></i> Fondée</th>
+                        <th><i class="fas fa-cogs me-1"></i> Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="equipesTableBody">
+                    <!-- Les équipes seront chargées ici dynamiquement -->
+                </tbody>
+            </table>
+            
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center p-3 border-top">
+                <div class="text-muted" id="paginationInfo">
+                    Chargement...
+                </div>
+                <nav>
+                    <ul class="pagination mb-0" id="paginationNav">
+                        <!-- Pagination sera générée dynamiquement -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pour ajouter une équipe -->
+    <div class="modal fade" id="addTeamModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background: var(--hockey-blue); color: white;">
+                    <h5 class="modal-title">
+                        <i class="fas fa-plus me-2"></i>
+                        Ajouter une nouvelle équipe
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addTeamForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="teamName" class="form-label">
+                                    <i class="fas fa-team me-1"></i> Nom de l'équipe
+                                </label>
+                                <input type="text" class="form-control" id="teamName" name="nom" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="teamCity" class="form-label">
+                                    <i class="fas fa-map-marker-alt me-1"></i> Ville
+                                </label>
+                                <input type="text" class="form-control" id="teamCity" name="ville" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="teamDivision" class="form-label">
+                                    <i class="fas fa-layer-group me-1"></i> Division
+                                </label>
+                                <select class="form-select" id="teamDivision" name="division" required>
+                                    <option value="">Sélectionner une division</option>
+                                    <option value="est">Est</option>
+                                    <option value="ouest">Ouest</option>
+                                    <option value="central">Central</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="teamFounded" class="form-label">
+                                    <i class="fas fa-calendar me-1"></i> Année de fondation
+                                </label>
+                                <input type="number" class="form-control" id="teamFounded" name="anneeFondation" min="1800" max="2025">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="teamDescription" class="form-label">
+                                <i class="fas fa-info-circle me-1"></i> Description (optionnel)
+                            </label>
+                            <textarea class="form-control" id="teamDescription" name="description" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> Annuler
+                    </button>
+                    <button type="button" class="btn btn-hockey-primary" onclick="ajouterEquipe()">
+                        <i class="fas fa-save me-1"></i> Sauvegarder
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="js/accesdonnees.js"></script>
 </body>
 </html>

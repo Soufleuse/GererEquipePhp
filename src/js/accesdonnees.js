@@ -1,5 +1,6 @@
 // Variables globales
 let toutesLesEquipes = [];
+let toutesLesDivisions = [];
 let equipesAffichees = [];
 let currentPage = 1;
 const itemsPerPage = 10;
@@ -18,7 +19,6 @@ async function getEquipe(id) {
             throw new Error(`Statut de la réponse : ${response.status}`);
         }
         json = await response.json();
-        console.log(json);
     }
     catch (error) {
         console.error(error.message);
@@ -35,7 +35,6 @@ async function getListeEquipe() {
             throw new Error(`Statut de la réponse : ${response.status}`);
         }
         json = await response.json();
-        console.log(json);
     }
     catch (error) {
         console.error(error.message);
@@ -45,8 +44,6 @@ async function getListeEquipe() {
 }
 
 async function majEquipe(entree) {
-    console.log('Entrée majEquipe : ', entree);
-    
     const url = "http://localhost:5245/api/equipe/" + entree.id;
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -101,8 +98,22 @@ async function ajoutEquipe(entree) {
 }
 
 // Nouvelles fonctions pour l'interface
+async function chargerDivisions() {
+    montrerChargementDivisions(true);
+    hideError();
+    
+    try {
+        toutesLesDivisions = await listerDivision();
+        afficherDivision();
+    } catch (error) {
+        showError('Erreur lors du chargement des divisions: ' + error.message);
+    } finally {
+        montrerChargementDivisions(false);
+    }
+}
+
 async function chargerEquipes() {
-    showLoading(true);
+    montrerChargementEquipes(true);
     hideError();
     
     try {
@@ -115,22 +126,51 @@ async function chargerEquipes() {
     } catch (error) {
         showError('Erreur lors du chargement des équipes: ' + error.message);
     } finally {
-        showLoading(false);
+        montrerChargementEquipes(false);
     }
 }
 
 function mettreAJourStatistiques() {
     const stats = {
         total: toutesLesEquipes.length,
-        est: toutesLesEquipes.filter(e => e.division && e.division.toLowerCase() === 'est').length,
-        ouest: toutesLesEquipes.filter(e => e.division && e.division.toLowerCase() === 'ouest').length,
-        central: toutesLesEquipes.filter(e => e.division && e.division.toLowerCase() === 'central').length
+        atlantique: toutesLesEquipes.filter(e => e.divisionId === 1).length,
+        metro: toutesLesEquipes.filter(e => e.divisionId === 2).length,
+        central: toutesLesEquipes.filter(e => e.divisionId === 3).length,
+        pacifique: toutesLesEquipes.filter(e => e.divisionId === 4).length
     };
 
     document.getElementById('totalEquipes').textContent = stats.total;
-    document.getElementById('divisionEst').textContent = stats.est;
-    document.getElementById('divisionOuest').textContent = stats.ouest;
-    document.getElementById('divisionCentral').textContent = stats.central;
+    document.getElementById('division1').textContent = stats.atlantique;
+    document.getElementById('division2').textContent = stats.metro;
+    document.getElementById('division3').textContent = stats.central;
+    document.getElementById('division4').textContent = stats.pacifique;
+}
+
+function afficherDivision()
+{
+    const listeCartesStatsDiv = document.getElementById('cartesStatsDiv');
+    listeCartesStatsDiv.innerHTML = `
+        <div class="col-md-3 mb-3">
+            <div class="stats-card">
+                <div class="stats-number" id="totalEquipes">0</div>
+                <div class="text-muted">Total Équipes</div>
+                <i class="fas fa-users fa-2x text-primary mt-2"></i>
+            </div>
+        </div>
+    `;
+    
+    toutesLesDivisions.forEach((x) => {
+        const row = `
+            <div class="col-md-3 mb-3">
+                <div class="stats-card">
+                    <div class="stats-number" id="division${x.id}">0</div>
+                    <div class="text-muted">${x.nomDivision || 'N/A'}</div>
+                    <i class="fas fa-map-marker-alt fa-2x text-info mt-2"></i>
+                </div>
+            </div>
+        `;
+        listeCartesStatsDiv.innerHTML += row;
+    });
 }
 
 function afficherEquipes() {
@@ -154,13 +194,23 @@ function afficherEquipes() {
     }
 
     equipesPage.forEach(equipe => {
-        const divisionClass = getDivisionClass(equipe.division);
+        const divisionClass = getDivisionClass(equipe.divisionId);
+        let nomDivision = "";
+        
+        toutesLesDivisions.forEach( maDivision => 
+        {
+            if(maDivision.id == equipe.divisionId)
+            {
+                nomDivision = maDivision.nomDivision;
+            }
+        });
+
         const row = `
             <tr>
                 <td>${equipe.id || 'N/A'}</td>
                 <td><strong>${equipe.nomEquipe || 'Sans nom'}</strong></td>
                 <td>${equipe.ville || 'N/A'}</td>
-                <td><span class="division-badge ${divisionClass}">${equipe.division || 'N/A'}</span></td>
+                <td><span class="division-badge ${divisionClass || ''}">${nomDivision || 'N/A'}</span></td>
                 <td>${equipe.anneeDebut || 'N/A'}</td>
                 <td class="action-buttons">
                     <button class="btn btn-sm btn-hockey-success" title="Modifier" onclick="modifierEquipe(${equipe.id})">
@@ -181,12 +231,52 @@ function afficherEquipes() {
 
 function getDivisionClass(division) {
     if (!division) return '';
-    switch (division.toLowerCase()) {
-        case 'est': return 'division-est';
-        case 'ouest': return 'division-ouest';
-        case 'central': return 'division-central';
-        default: return '';
+    if (!Number.isInteger(division)) return '';
+    switch (division) {
+        case 1: return 'division-atlantique';
+        case 2: return 'division-Metro';
+        case 3: return 'division-central';
+        default: return 'division-pacifique';
     }
+}
+
+async function listerDivision()
+{
+    const url = "http://localhost:5245/api/division/";
+    let json = "";
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Statut de la réponse : ${response.status}`);
+        }
+        json = await response.json();
+    }
+    catch (error) {
+        console.error(error.message);
+        throw error;
+    }
+    return json;
+}
+
+async function obtenirDivision(division)
+{
+    if (!division) return '';
+    if (!Number.isInteger(division)) return '';
+
+    const url = "http://localhost:5245/api/division/" + division;
+    let json = "";
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Statut de la réponse : ${response.status}`);
+        }
+        json = await response.json();
+    }
+    catch (error) {
+        console.error(error.message);
+        throw error;
+    }
+    return json;
 }
 
 function mettreAJourPagination() {
@@ -307,8 +397,12 @@ async function ajouterEquipe() {
 }
 
 // Fonctions utilitaires
-function showLoading(show) {
-    document.getElementById('loading').style.display = show ? 'block' : 'none';
+function montrerChargementEquipes(show) {
+    document.getElementById('loadingEquipes').style.display = show ? 'block' : 'none';
+}
+
+function montrerChargementDivisions(show) {
+    document.getElementById('loadingDivisions').style.display = show ? 'block' : 'none';
 }
 
 function showError(message) {
@@ -322,6 +416,9 @@ function hideError() {
 
 // Event listeners
 document.addEventListener('DOMContentLoaded', function() {
+    // Charger les divisions au démarrage
+    chargerDivisions();
+
     // Charger les équipes au démarrage
     chargerEquipes();
 

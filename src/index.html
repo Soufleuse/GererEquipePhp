@@ -62,8 +62,16 @@
         </div>
 
         <!-- Stats Cards -->
-        <div class="row mb-4">
-            <div class="col-md-3 mb-3">
+        <div id="cartesStats">
+            <!-- Loading indicator -->
+            <div id="loadingDivisions" class="loading">
+                <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+                <p class="mt-2">Chargement des divisions...</p>
+            </div>
+            <div id="cartesStatsDiv" class="row mb-4">
+                <!-- Les cartes divisions seront chargées dynamiquement. -->
+            </div>
+            <!--div class="col-md-3 mb-3">
                 <div class="stats-card">
                     <div class="stats-number" id="totalEquipes">0</div>
                     <div class="text-muted">Total Équipes</div>
@@ -90,7 +98,7 @@
                     <div class="text-muted">Division Central</div>
                     <i class="fas fa-map-marker-alt fa-2x text-success mt-2"></i>
                 </div>
-            </div>
+            </div-->
         </div>
 
         <!-- Teams Table -->
@@ -112,7 +120,7 @@
             </div>
 
             <!-- Loading indicator -->
-            <div id="loading" class="loading">
+            <div id="loadingEquipes" class="loading">
                 <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
                 <p class="mt-2">Chargement des équipes...</p>
             </div>

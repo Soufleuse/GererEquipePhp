@@ -158,6 +158,12 @@ function afficherDivision()
             </div>
         </div>
     `;
+
+    const listeOptionDivision = document.getElementById('divisionFilter');
+    var opt = document.createElement('option');
+    opt.value = '';
+    opt.innerHTML = "Toutes divisions";
+    listeOptionDivision.appendChild(opt);
     
     toutesLesDivisions.forEach((x) => {
         const row = `
@@ -170,6 +176,11 @@ function afficherDivision()
             </div>
         `;
         listeCartesStatsDiv.innerHTML += row;
+
+        var ajoutOption = document.createElement('option');
+        ajoutOption.value = x.id;
+        ajoutOption.innerHTML = x.nomDivision;
+        listeOptionDivision.appendChild(ajoutOption);
     });
 }
 
@@ -332,15 +343,14 @@ function changerPage(page) {
 
 function filtrerEquipes() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    const divisionFilter = document.getElementById('divisionFilter').value.toLowerCase();
+    const divisionFilter = document.getElementById('divisionFilter').value;
 
     equipesAffichees = toutesLesEquipes.filter(equipe => {
         const matchesSearch = !searchTerm || 
             (equipe.nomEquipe && equipe.nomEquipe.toLowerCase().includes(searchTerm)) ||
             (equipe.ville && equipe.ville.toLowerCase().includes(searchTerm));
         
-        const matchesDivision = !divisionFilter || 
-            (equipe.division && equipe.division.toLowerCase() === divisionFilter);
+        const matchesDivision = !divisionFilter || equipe.divisionId === Number(divisionFilter);
 
         return matchesSearch && matchesDivision;
     });

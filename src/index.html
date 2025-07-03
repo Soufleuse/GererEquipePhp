@@ -80,10 +80,7 @@
                 <div class="d-flex gap-2">
                     <input type="text" id="searchInput" class="form-control" placeholder="Rechercher une équipe..." style="width: 250px;">
                     <select id="divisionFilter" class="form-select" style="width: 150px;">
-                        <!--option value="">Toutes divisions</option>
-                        <option value="est">Est</option>
-                        <option value="ouest">Ouest</option>
-                        <option value="central">Central</option-->
+                        <!-- Les divisions seront générées automatiquement. -->
                     </select>
                     <button class="btn btn-outline-primary" onclick="chargerEquipes()" title="Actualiser">
                         <i class="fas fa-sync-alt"></i>
@@ -145,7 +142,7 @@
                                 <label for="teamName" class="form-label">
                                     <i class="fas fa-team me-1"></i> Nom de l'équipe
                                 </label>
-                                <input type="text" class="form-control" id="teamName" name="nom" required>
+                                <input type="text" class="form-control" id="teamName" name="nomEquipe" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="teamCity" class="form-label">
@@ -160,24 +157,30 @@
                                     <i class="fas fa-layer-group me-1"></i> Division
                                 </label>
                                 <select class="form-select" id="teamDivision" name="division" required>
-                                    <option value="">Sélectionner une division</option>
+                                    <!--option value="">Sélectionner une division</option>
                                     <option value="est">Est</option>
                                     <option value="ouest">Ouest</option>
-                                    <option value="central">Central</option>
+                                    <option value="central">Central</option-->
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="teamFounded" class="form-label">
                                     <i class="fas fa-calendar me-1"></i> Année de fondation
                                 </label>
-                                <input type="number" class="form-control" id="teamFounded" name="anneeFondation" min="1800" max="2025">
+                                <input type="number" class="form-control" id="teamFounded" name="anneeDebut" min="1800" max="2025">
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="teamDescription" class="form-label">
-                                <i class="fas fa-info-circle me-1"></i> Description (optionnel)
-                            </label>
-                            <textarea class="form-control" id="teamDescription" name="description" rows="3"></textarea>
+                            <div class="col-md-6 mb-3">
+                                <label for="teamCeased" class="form-label">
+                                    <i class="fas fa-calendar me-1"></i> Année de fermeture (optionnel)
+                                </label>
+                                <input type="number" class="form-control" id="teamCeased" name="anneeFin" min="1800" max="2025">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="becameTeam" class="form-label">
+                                    <i class="fas fa-calendar me-1"></i> Est devenue équipe (optionnelle)
+                                </label>
+                                <input type="number" class="form-control" id="becameTeam" name="estDevenueEquipe">
+                            </div>
                         </div>
                     </form>
                 </div>

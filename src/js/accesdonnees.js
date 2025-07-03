@@ -164,6 +164,12 @@ function afficherDivision()
     opt.value = '';
     opt.innerHTML = "Toutes divisions";
     listeOptionDivision.appendChild(opt);
+
+    const listeDivisionsPourAjout = document.getElementById('teamDivision');
+    var opt2 = document.createElement('option');
+    opt2.value = '';
+    opt2.innerHTML = "Sélectionner une division";
+    listeDivisionsPourAjout.appendChild(opt2);
     
     toutesLesDivisions.forEach((x) => {
         const row = `
@@ -181,6 +187,11 @@ function afficherDivision()
         ajoutOption.value = x.id;
         ajoutOption.innerHTML = x.nomDivision;
         listeOptionDivision.appendChild(ajoutOption);
+
+        var ajoutOption2 = document.createElement('option');
+        ajoutOption2.value = x.id;
+        ajoutOption2.innerHTML = x.nomDivision;
+        listeDivisionsPourAjout.appendChild(ajoutOption2);
     });
 }
 
@@ -381,15 +392,16 @@ async function ajouterEquipe() {
     const formData = new FormData(form);
     
     const nouvelleEquipe = {
-        nom: formData.get('nomEquipe'),
+        nomEquipe: formData.get('nomEquipe'),
         ville: formData.get('ville'),
-        division: formData.get('division'),
-        anneeFondation: parseInt(formData.get('anneeDebut')) || null,
-        description: formData.get('description')
+        divisionId: formData.get('division'),
+        anneeDebut: parseInt(formData.get('anneeDebut')) || null,
+        anneeFin: parseInt(formData.get('anneeFin')) || null,
+        estDevenueEquipe: parseInt(formData.get('estDevenueEquipe')) || null
     };
 
     // Validation basique
-    if (!nouvelleEquipe.nomEquipe || !nouvelleEquipe.ville || !nouvelleEquipe.division) {
+    if (!nouvelleEquipe.nomEquipe || !nouvelleEquipe.ville || !nouvelleEquipe.divisionId || !nouvelleEquipe.anneeDebut) {
         alert('Veuillez remplir tous les champs obligatoires');
         return;
     }
